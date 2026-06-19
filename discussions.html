@@ -32,35 +32,42 @@
         </p>
       </section>
 
-      <section class="feedback-panel">
-        <div>
-          <h2>Join the discussion</h2>
-          <p>
-            These timelines use X search operators for recent original posts and
-            replies from Luke4OSS. X controls ranking, availability, and spam
-            filtering for embedded results.
-          </p>
-        </div>
-        <div class="button-row">
-          <a class="button" id="x-original-search" href="https://x.com/Luke4OSS">Original Posts</a>
-          <a class="button secondary" id="x-reply-search" href="https://x.com/Luke4OSS/with_replies">Replies</a>
-        </div>
-      </section>
-
       <section class="discussion-grid" aria-label="Capability discussions from X">
         <article class="discussion-panel">
           <div class="discussion-panel-header">
             <p class="status">Original Posts</p>
             <h2>Capability posts</h2>
+            <p>
+              The latest original Luke4OSS posts about capability or capabilities,
+              followed by recent replies when X search surfaces them.
+            </p>
           </div>
-          <a
-            class="twitter-timeline"
-            id="original-timeline"
-            data-height="720"
-            data-chrome="noheader nofooter noborders transparent"
-            href="https://twitter.com/search?q=from%3ALuke4OSS%20%28capability%20OR%20capabilities%29%20-filter%3Areplies%20-filter%3Aretweets"
-          >
-            View original posts from Luke4OSS about capability on X.
+          <div class="x-feed-block">
+            <p class="feed-label">Posts</p>
+            <a
+              class="twitter-timeline"
+              id="original-timeline"
+              data-tweet-limit="2"
+              data-chrome="noheader nofooter noborders transparent"
+              href="https://twitter.com/search?q=from%3ALuke4OSS%20%28capability%20OR%20capabilities%29%20-filter%3Areplies%20-filter%3Aretweets"
+            >
+              View original posts from Luke4OSS about capability on X.
+            </a>
+          </div>
+          <div class="x-feed-block">
+            <p class="feed-label">Replies to the conversation</p>
+            <a
+              class="twitter-timeline"
+              id="conversation-replies-timeline"
+              data-tweet-limit="3"
+              data-chrome="noheader nofooter noborders transparent"
+              href="https://twitter.com/search?q=to%3ALuke4OSS%20%28capability%20OR%20capabilities%29%20-from%3ALuke4OSS%20-filter%3Aretweets"
+            >
+              View replies to Luke4OSS about capability on X.
+            </a>
+          </div>
+          <a class="show-more-link" id="x-original-search" href="https://x.com/Luke4OSS">
+            Show more original posts on X
           </a>
         </article>
 
@@ -68,15 +75,22 @@
           <div class="discussion-panel-header">
             <p class="status">Replies</p>
             <h2>Thread participation</h2>
+            <p>
+              Recent Luke4OSS replies in threads where the reply text references
+              capability or capabilities.
+            </p>
           </div>
           <a
             class="twitter-timeline"
             id="reply-timeline"
-            data-height="720"
+            data-tweet-limit="3"
             data-chrome="noheader nofooter noborders transparent"
             href="https://twitter.com/search?q=from%3ALuke4OSS%20%28capability%20OR%20capabilities%29%20filter%3Areplies%20-filter%3Aretweets"
           >
             View replies from Luke4OSS about capability on X.
+          </a>
+          <a class="show-more-link" id="x-reply-search" href="https://x.com/Luke4OSS/with_replies">
+            Show more replies on X
           </a>
         </article>
       </section>
@@ -92,6 +106,7 @@
       const since = oneWeekAgo.toISOString().slice(0, 10);
       const terms = "(capability OR capabilities)";
       const originalQuery = `from:Luke4OSS ${terms} -filter:replies -filter:retweets since:${since}`;
+      const conversationRepliesQuery = `to:Luke4OSS ${terms} -from:Luke4OSS -filter:retweets since:${since}`;
       const replyQuery = `from:Luke4OSS ${terms} filter:replies -filter:retweets since:${since}`;
       const xSearchBase = "https://x.com/search?f=live&q=";
       const twitterSearchBase = "https://twitter.com/search?q=";
@@ -99,6 +114,7 @@
       document.querySelector("#x-original-search").href = `${xSearchBase}${encodeURIComponent(originalQuery)}`;
       document.querySelector("#x-reply-search").href = `${xSearchBase}${encodeURIComponent(replyQuery)}`;
       document.querySelector("#original-timeline").href = `${twitterSearchBase}${encodeURIComponent(originalQuery)}`;
+      document.querySelector("#conversation-replies-timeline").href = `${twitterSearchBase}${encodeURIComponent(conversationRepliesQuery)}`;
       document.querySelector("#reply-timeline").href = `${twitterSearchBase}${encodeURIComponent(replyQuery)}`;
 
       const widgetScript = document.createElement("script");
